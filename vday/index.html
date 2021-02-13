@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Branwen's Valentine's Day Sudoku</title>
+  <style type="text/css">
+    body, html {
+      padding    : 0;
+      margin     : 0;
+    }
+
+    body {
+      background-image : url('hearts.png');
+    }
+
+    @font-face {
+      font-family : 'Alegreya';
+      font-style  : italic;
+      font-weight : 400;
+      src         : local('Alegreya Italic'),
+                    local('Alegreya-Italic'),
+                    url(alegreya-italic.woff) format('woff');
+    }
+
+    @font-face {
+      font-family : 'Alegreya';
+      font-style  : normal;
+      font-weight : 400;
+      src         : local('Alegreya'),
+                    local('Alegreya-Regular'),
+                    url(alegreya-regular.woff) format('woff');
+    }
+
+    #content {
+      margin: 0px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      border: 4px solid #F21B40;
+      border-radius: 25px;
+      background-color: white;
+      padding-left: 60px;
+      padding-right: 60px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 500px;
+    }
+
+    #sudoku_wrapper {
+      text-align: center;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    #content h1 {
+      text-align: center;
+      font-size: 8mm;
+      font-family : 'Alegreya';
+      font-weight: 450;
+    }
+
+    #content p {
+      text-align: justify;
+      text-justify: inter-word;
+      font-family : 'Alegreya';
+      hyphens: manual;
+    }
+
+    #content p.signature {
+      text-align: right;
+    }
+
+    #content p.address {
+      text-align: right;
+    }
+
+    #content p.instructions {
+      text-align: center;
+      font-size: 2.5mm;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    p.signature a {
+      font-size: 6mm;
+      color: #F21B40;
+      text-decoration: none;
+    }
+
+    p.signature a.disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    p.signature a:hover {
+      text-decoration: none;
+    }
+
+    @keyframes animate {
+      0% {
+        color: white;
+      }
+      80% {
+        color: #F21B40;
+      }
+    }
+
+    p.signature a.beating {
+      animation: animate 1s infinite;
+    }
+
+    p.signature a.beating:hover {
+      animation: none;
+      color: black;
+    }
+  </style>
+  <link rel="stylesheet" href="../lib/pzls.css">
+  <script src="../lib/pzls.js"></script>
+</head>
+<body>
+  <div id="content">
+    <p class="address">
+      Saarbrücken, 14/02/2021
+    <p>
+    <p>
+      Chère Bran,
+    </p>
+    <p>
+      Voici un petit puzzle que j'ai crée spécialement pour toi.
+      J'espère qu'il te plaira, et que tu ne trouvera pas la solution trop facilement.
+      Tu peux bien sûr me demander de l'aide si tu es bloquée. 😉
+    </p>
+    <p>
+      Normal sudoku rules apply.
+      Digits increase along thermometers, starting at the bulb.
+      Cells separated by a white dot contain consecutive digits,
+      and cells separated by a black dot contain digits having a 1:2 ratio.
+    </p>
+    <div id="sudoku_wrapper">
+      <div id="my_sudoku"></div>
+    </div>
+    <p class="instructions">
+      Use number keys to enter digits,
+      Backspace to erase,
+      hold Ctrl for center marks and Shift for corner marks.
+    </p>
+    <p class="signature">Rod <a id="heart" href='javascript:check_solution();'>❤️</a></p>
+  </div>
+  <script>
+    var descr = standard_sudoku_descr([]);
+
+    descr.thermos = [
+      {bulb: {x:0,y:0}, path: [{x:0,y:2}, {x:2,y:2}]},
+      {bulb: {x:3,y:0}, path: [{x:3,y:2}, {x:5,y:2}, {x:5,y:0}]},
+      {bulb: {x:6,y:0}, path: [{x:6,y:1}, {x:7,y:2}, {x:8,y:1}, {x:8,y:0}]},
+      {bulb: {x:1,y:7}, path: [{x:0,y:6}]},
+      {bulb: {x:1,y:7}, path: [{x:2,y:6}]},
+      {bulb: {x:1,y:7}, path: [{x:0,y:8}]},
+      {bulb: {x:3,y:8}, path: [{x:5,y:8}, {x:5,y:6}, {x:3,y:6}, {x:3,y:7}]},
+      {bulb: {x:8,y:6}, path: [{x:8,y:8}, {x:6,y:8}, {x:6,y:6}]},
+    ];
+
+    descr.kropki_dots = [
+      {kind: "white", path: [{x:0,y:3}, {x:0,y:4}]},
+      {kind: "white", path: [{x:1,y:2}, {x:1,y:3}]},
+      {kind: "white", path: [{x:3,y:3}, {x:3,y:4}, {x:3,y:5}]},
+      {kind: "white", path: [{x:5,y:3}, {x:5,y:4}, {x:5,y:5}]},
+      {kind: "black", path: [{x:0,y:5}, {x:0,y:6}]},
+      {kind: "black", path: [{x:1,y:7}, {x:2,y:7}]},
+      {kind: "black", path: [{x:2,y:4}, {x:3,y:4}]},
+      {kind: "black", path: [{x:4,y:3}, {x:4,y:4}]},
+      {kind: "black", path: [{x:7,y:3}, {x:7,y:4}, {x:7,y:5}]},
+    ]
+
+    var sudoku_object = make_sudoku("my_sudoku", descr);
+
+    function check_solution(){
+      alert(sudoku_object.do_check());
+    }
+
+    function set_heart(){
+      var heart = document.getElementById("heart");
+
+      if(sudoku_object.is_ready()){
+        heart.classList.remove("disabled");
+        heart.classList.add("beating");
+      } else {
+        heart.classList.remove("beating");
+        heart.classList.add("disabled");
+      }
+    }
+
+    var intervalID = window.setInterval(set_heart, 500);
+  </script>
+</body>
+</html>
