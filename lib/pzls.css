@@ -1,0 +1,86 @@
+.puzzle {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.puzzle .overlay {
+  position : absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  margin : 0px;
+  padding : 0px;
+  pointer-events: none;
+}
+
+.puzzle .background {
+  background-color: white;
+  z-index: -1;
+}
+
+.puzzle .foreground {
+  z-index: 10;
+}
+
+.puzzle .grid {
+  z-index: 5;
+}
+
+.puzzle table.grid {
+  z-index: 2;
+  margin : auto;
+  padding : 0;
+  border-collapse : collapse;
+}
+
+.puzzle table.grid tr {
+  padding : 0;
+  margin : 0;
+}
+
+.puzzle td.cell {
+  position: relative;
+  width  : 50px;
+  height : 50px;
+  border : 1px solid black;
+  font-size : 40px;
+  user-select : none;
+  padding : 0;
+  margin : 0;
+  color : #4169E1;
+}
+
+.puzzle td.selected {
+  background-color : rgba(255, 255, 224, 0.5);
+}
+
+.puzzle span.value {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.puzzle span.centerMark {
+  position: absolute;
+  top: 18px;
+  left: 0px;
+  width: 100%;
+  font-size : 14px;
+  width : 50px;
+  overflow : hidden;
+}
+
+.puzzle span.cornerMark {
+  position: absolute;
+  top: 4px;
+  left: 0px;
+  width: 100%;
+  text-align : left;
+  font-size : 14px;
+  width : 50px;
+  overflow : hidden;
+}

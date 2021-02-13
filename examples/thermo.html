@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example of thermo sudoku</title>
+  <style type="text/css">
+    body, html {
+      padding    : 0;
+      margin     : 0;
+      text-align : center;
+    }
+
+    .instructions {
+      font-size: 2.5mm;
+    }
+  </style>
+  <!-- The following two lines are needed for puzzles. -->
+  <link rel="stylesheet" href="../lib/pzls.css">
+  <script src="../lib/pzls.js"></script>
+</head>
+<body>
+  <h1>Example of thermo sudoku</h1>
+  <p>
+    (Featured in Cracking the Cryptic video
+    <a href="https://youtu.be/Kgw2d0X5vDU">A Great 'Thermo' Sudoku from one of our 'hottest' setters</a>,
+    by Phistomefel.)
+  </p>
+  <p>
+    <b>Rules:</b> normal sudoku rules apply, digits must increase along thermometers (starting at the bulb).
+  </p>
+
+  <!-- Element in which to append the puzzle. -->
+  <div id="the_puzzle"></div>
+
+  <p class="instructions">
+    Use number keys to enter digits,
+    Backspace to erase,
+    hold Ctrl for center marks and Shift for corner marks.
+  <p>
+
+  <!-- We also add a "check" button. -->
+  <button type="button" onclick="check_puzzle();">Check</button>
+
+  <script>
+    // We create a standard grid with no givens.
+    var descr = standard_sudoku_descr([]);
+
+    // We add thermometers.
+    descr.thermos = [
+      {bulb: {x:4,y:1}, path: [{x:7,y:1}]},
+      {bulb: {x:4,y:1}, path: [{x:4,y:0}, {x:7,y:0}]},
+      {bulb: {x:0,y:3}, path: [{x:0,y:1}, {x:1,y:1}]},
+      {bulb: {x:1,y:3}, path: [{x:2,y:3}, {x:2,y:0}, {x:1,y:0}]},
+      {bulb: {x:3,y:3}, path: [{x:3,y:4}]},
+      {bulb: {x:1,y:6}, path: [{x:1,y:8}, {x:2,y:8}, {x:2,y:7}]},
+      {bulb: {x:4,y:6}, path: [{x:4,y:5}, {x:6,y:5}]},
+      {bulb: {x:6,y:6}, path: [{x:8,y:6}, {x:8,y:7}, {x:7,y:7}]},
+      {bulb: {x:8,y:8}, path: [{x:5,y:8}, {x:5,y:7}, {x:6,y:7}]},
+    ];
+
+    // Create the sudoku form the description, obtaining a handle s.
+    var s = make_sudoku("the_puzzle", descr);
+
+    // The handle can be used to interact with the puzzle, here for checking.
+    function check_puzzle(){
+      alert(s.do_check());
+    }
+  </script>
+</body>
+</html>
