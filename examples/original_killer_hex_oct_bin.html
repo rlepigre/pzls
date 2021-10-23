@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>An original "computer killer" sudoku</title>
+  <style type="text/css">
+    body, html {
+      padding    : 0;
+      margin     : 0;
+      text-align : center;
+    }
+
+    .instructions {
+      font-size: 2.5mm;
+    }
+  </style>
+  <!-- The following two lines are needed for puzzles. -->
+  <link rel="stylesheet" href="../lib/pzls.css">
+  <script src="../lib/pzls.js"></script>
+</head>
+<body>
+  <h1>An original "computer killer" sudoku</h1>
+  <p>
+    <b>Rules:</b> normal killer sudoku rules apply, with the exception that
+    cages totals are not written with standard decimal numbers (base 10).
+    Instead, each cage total is either: a binary number (base 2), an octal
+    numbers (base 8), or an hexadecimal number (base 16).
+  </p>
+
+  <!-- Element in which to append the puzzle. -->
+  <div id="the_puzzle"></div>
+
+  <p class="instructions">
+    Use number keys to enter digits,
+    Backspace to erase,
+    hold Ctrl for center marks and Shift for corner marks.
+  <p>
+
+  <!-- We also add a "check" button. -->
+  <button type="button" onclick="check_puzzle();">Check</button>
+
+  <script>
+    // We only need the list of cages for this one.
+    var cages = [
+      {x: 0, y:0, value: 30,  path: [2, 1, -1, 1, -1, -2]},
+      {x: 3, y:0, value: 45,  path: [3, 1, -1, 2, -2, -3]},
+      {x: 6, y:1, value: 11,  path: [1, 2, -1, -2]},
+      {x: 8, y:1, value: 100, path: [1, 1, -1, -1]},
+      {x: 1, y:2, value: 13,  path: [2, 1, -2, -1]},
+      {x: 5, y:2, value: 11,  path: [1, 2, -1, -2]},
+      {x: 7, y:2, value: 10,  path: [2, 1, -2, -1]},
+      {x: 1, y:3, value: 14,  path: [1, 2, -1, -2]},
+      {x: 3, y:3, value: 18,  path: [1, 3, -1, -3]},
+      {x: 4, y:3, value: 17,  path: [1, 1, 1, 2, -2, -3]},
+      {x: 6, y:3, value: 9,   path: [3, 1, -3, -1]},
+      {x: 2, y:4, value: "F", path: [1, 2, -1, -2]},
+      {x: 7, y:4, value: 10,  path: [2, 1, -2, -1]},
+      {x: 0, y:5, value: 18,  path: [1, 4, -1, -4]},
+      {x: 7, y:5, value: 21,  path: [2, 1, -2, -1]},
+      {x: 1, y:6, value: 12,  path: [2, 1, -2, -1]},
+      {x: 3, y:6, value: 11,  path: [1, 3, -1, -3]},
+      {x: 6, y:6, value: 14,  path: [1, 3, -1, -3]},
+      {x: 7, y:6, value: 101, path: [2, 1, -2, -1]},
+      {x: 2, y:7, value: 1,   path: [1, 1, -1, -1]},
+      {x: 8, y:7, value: 12,  path: [1, 2, -2, -1, 1, -1]},
+      {x: 4, y:8, value: 10,  path: [1, 1, -1, -1]},
+      {x: 5, y:8, value: 10,  path: [1, 1, -1, -1]},
+    ];
+
+    // Create the sudoku form the cages, obtaining a handle s.
+    var s = make_sudoku("the_puzzle", standard_killer_descr(cages));
+
+    // The handle can be used to interact with the puzzle, here for checking.
+    function check_puzzle(){
+      alert(s.do_check());
+    }
+  </script>
+</body>
+</html>
